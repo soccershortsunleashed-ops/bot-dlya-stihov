@@ -156,3 +156,6 @@ cython_debug/
 *.db
 *.sqlite
 .kilocode/
+Задача*.md
+SETUP_PROMPT.md
+SYSTEM PROMPT.md
