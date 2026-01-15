@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block title %}Обзор - Creative Funnel Admin{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card pastel-blue mb-3">
+            <div class="card-header">Пользователи</div>
+            <div class="card-body">
+                <h5 class="card-title">{{ total_users }}</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card pastel-green mb-3">
+            <div class="card-header">Заказы</div>
+            <div class="card-body">
+                <h5 class="card-title">{{ total_orders }}</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card pastel-blue mb-3">
+            <div class="card-header">Выручка</div>
+            <div class="card-body">
+                <h5 class="card-title">{{ "%.2f"|format(total_revenue) }} ₽</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2 class="mt-4">Последние заказы</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Статус</th>
+            <th>Дата</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in recent_orders %}
+        <tr>
+            <td><a href="/admin/orders/{{ order.id }}"><code>{{ order.id|string|truncate(8, True, '') }}</code></a></td>
+            <td>
+                {% set label = STATUS_LABELS.order[order.status] or order.status %}
+                <span class="badge bg-primary-subtle text-primary">{{ label }}</span>
+            </td>
+            <td>{{ order.created_at.strftime('%d.%m.%Y %H:%M') }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

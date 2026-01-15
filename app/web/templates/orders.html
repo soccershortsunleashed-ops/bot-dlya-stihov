@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}Заказы{% endblock %}
+
+{% block content %}
+<h2>Список заказов</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Статус</th>
+            <th>Дата создания</th>
+            <th class="text-end">Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td><code>{{ order.id|string|truncate(8, True, '') }}</code></td>
+            <td>
+                {% set label = STATUS_LABELS.order[order.status] or order.status %}
+                <span class="badge bg-primary-subtle text-primary">{{ label }}</span>
+            </td>
+            <td>{{ order.created_at.strftime('%d.%m.%Y %H:%M') }}</td>
+            <td class="text-end">
+                <a href="/admin/orders/{{ order.id }}" class="btn btn-sm btn-outline-info">Детали</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

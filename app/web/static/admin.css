@@ -1,0 +1,497 @@
+/* Default theme = LIGHT (white background + pastel cards) */
+:root {
+    /* Surfaces */
+    --bg: #f6f7fb;
+    --card-bg: #ffffff;
+    --card-bg-pastel: #f2f6ff;          /* pastel tint for cards/sections */
+    --border-color: rgba(15, 23, 42, 0.12);
+    --sidebar-bg: #ffffff;
+
+    /* Text */
+    --text-primary: rgba(15, 23, 42, 0.92);
+    --text-secondary: rgba(15, 23, 42, 0.66);
+    --text-dim: rgba(15, 23, 42, 0.46);
+
+    /* Accents */
+    --accent-primary: #2563eb;
+    --accent-success: #16a34a;
+    --accent-warning: #d97706;
+    --accent-danger: #dc2626;
+
+    /* Hovers / headers */
+    --surface-header: rgba(37, 99, 235, 0.06);
+    --surface-hover: rgba(15, 23, 42, 0.04);
+
+    /* Inputs */
+    --input-bg: #ffffff;
+    --input-border: rgba(15, 23, 42, 0.16);
+    --focus: rgba(37, 99, 235, 0.22);
+}
+
+/* Optional: DARK theme override (enable by adding class "theme-dark" to body or html) */
+.theme-dark {
+    --bg: #0f111a;
+    --card-bg: #1a1d29;
+    --card-bg-pastel: #1a1d29;
+    --border-color: #2d3245;
+    --sidebar-bg: #1a1d29;
+
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-dim: rgba(255,255,255,0.52);
+
+    --accent-primary: #3b82f6;
+    --accent-success: #10b981;
+    --accent-warning: #f59e0b;
+    --accent-danger: #ef4444;
+
+    --surface-header: rgba(255, 255, 255, 0.03);
+    --surface-hover: rgba(255, 255, 255, 0.04);
+
+    --input-bg: #0f111a;
+    --input-border: #2d3245;
+    --focus: rgba(59, 130, 246, 0.20);
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+}
+
+/* Layout & Navigation */
+.navbar {
+    background-color: var(--card-bg) !important;
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.75rem 1rem;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: var(--accent-primary) !important;
+}
+
+.nav-link {
+    color: var(--text-secondary) !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    transition: all 0.2s;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--text-primary) !important;
+}
+
+/* Cards & Containers */
+.card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 18px -18px rgba(15, 23, 42, 0.35);
+    margin-bottom: 1.5rem;
+}
+
+/* Pastel variant for sections (optional class on cards) */
+.card.pastel {
+    background: var(--card-bg-pastel);
+}
+
+.card-header {
+    background-color: transparent;
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.25rem;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 1.25rem;
+}
+
+.card-title {
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+/* Forms */
+.form-label {
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.form-control, .form-select {
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-border);
+    color: var(--text-primary);
+    border-radius: 0.5rem;
+    padding: 0.625rem 0.875rem;
+}
+
+/* Placeholder visibility (especially important on light theme) */
+.form-control::placeholder,
+textarea.form-control::placeholder {
+    color: var(--text-dim);
+    opacity: 1;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: var(--input-bg);
+    border-color: var(--accent-primary);
+    color: var(--text-primary);
+    box-shadow: 0 0 0 3px var(--focus);
+}
+
+.form-text {
+    color: var(--text-secondary);
+}
+
+/* Disabled fields should still be readable (not "grey on grey") */
+.form-control:disabled, .form-select:disabled, textarea:disabled {
+    color: var(--text-dim);
+    opacity: 1;
+    cursor: not-allowed;
+}
+
+/* Buttons */
+.btn {
+    border-radius: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background-color: var(--accent-primary);
+    border-color: var(--accent-primary);
+}
+
+.btn-primary:hover {
+    filter: brightness(0.95);
+    transform: translateY(-1px);
+}
+
+.btn-outline-secondary {
+    border-color: var(--border-color);
+    color: var(--text-secondary);
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--surface-hover);
+    color: var(--text-primary);
+}
+
+/* Tables */
+.table {
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.table thead th {
+    background-color: var(--surface-header);
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table tbody td {
+    color: var(--text-primary);
+}
+
+.table-hover tbody tr:hover {
+    background-color: var(--surface-hover);
+}
+
+/* Badges & Status */
+.badge {
+    padding: 0.4em 0.8em;
+    border-radius: 2rem;
+    font-weight: 600;
+    background: rgba(15, 23, 42, 0.06);
+    border: 1px solid rgba(15, 23, 42, 0.10);
+}
+
+.status-active { color: var(--accent-success); }
+.status-inactive { color: var(--text-secondary); }
+.status-error { color: var(--accent-danger); }
+
+/* Custom Components */
+.api-key-mask {
+    font-family: monospace;
+    letter-spacing: 0.1em;
+}
+
+.parameter-card {
+    background-color: #ffffff;
+    border: 1px solid rgba(124, 58, 237, 0.15);
+    color: var(--text-primary);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.slider-container {
+    padding: 1rem 0;
+}
+
+/* =========================
+   SaaS Range Slider (Accuracy → Creativity)
+   - no bleeding
+   - visible track
+   - gradient from grey to blue
+   ========================= */
+
+:root {
+  /* Можно подстроить под дизайн */
+  --range-height: 8px;
+  --range-thumb: 16px;
+
+  /* "серый" для точности + "синий" для креативности */
+  --range-grey: rgba(15, 23, 42, 0.28);
+  --range-grey-weak: rgba(15, 23, 42, 0.18);
+  --range-blue: rgba(37, 99, 235, 0.90);
+  --range-blue-soft: rgba(37, 99, 235, 0.35);
+}
+
+/* Базовый слайдер */
+input[type="range"].creative-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: var(--range-height);
+  border-radius: 999px;
+  cursor: pointer;
+  outline: none;
+
+  /* Вся дорожка = градиент серый -> синий (направление соответствует "Точнее -> Креативнее") */
+  background: linear-gradient(to right, var(--range-grey) 0%, var(--range-blue) 100%);
+  position: relative;
+}
+
+/* Прогресс-оверлей до бегунка (тонкая подсветка) — рисуем ПОВЕРХ градиента через background-size */
+input[type="range"].creative-range {
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.65) 100%),
+    linear-gradient(to right, var(--range-grey) 0%, var(--range-blue) 100%);
+  /* 1й слой — беловатая подсветка прогресса, 2й слой — базовый градиент */
+  background-repeat: no-repeat, no-repeat;
+
+  /* ВАЖНО: первый слой будет иметь ширину прогресса (меняется JS) */
+  background-size: var(--range-progress, 50%) 100%, 100% 100%;
+  background-position: 0 0, 0 0;
+
+  /* Немного “вдавленности”, чтобы дорожка читалась на пастельной карточке */
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.10);
+}
+
+/* WebKit track reset (чтобы не конфликтовал с background на input) */
+input[type="range"].creative-range::-webkit-slider-runnable-track {
+  height: var(--range-height);
+  background: transparent;
+  border-radius: 999px;
+}
+
+/* Firefox track reset */
+input[type="range"].creative-range::-moz-range-track {
+  height: var(--range-height);
+  background: transparent;
+  border-radius: 999px;
+}
+
+/* Thumb (бегунок) */
+input[type="range"].creative-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--range-thumb);
+  height: var(--range-thumb);
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3px solid rgba(37, 99, 235, 0.95);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.22);
+  margin-top: calc((var(--range-height) - var(--range-thumb)) / 2);
+}
+
+input[type="range"].creative-range::-moz-range-thumb {
+  width: var(--range-thumb);
+  height: var(--range-thumb);
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3px solid rgba(37, 99, 235, 0.95);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.22);
+}
+
+/* Hover / active — легкий “живой” эффект */
+input[type="range"].creative-range:hover {
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.14);
+}
+
+input[type="range"].creative-range:active::-webkit-slider-thumb {
+  transform: scale(1.05);
+}
+
+input[type="range"].creative-range:active::-moz-range-thumb {
+  transform: scale(1.05);
+}
+
+/* Focus (доступность) */
+input[type="range"].creative-range:focus-visible::-webkit-slider-thumb {
+  box-shadow:
+    0 0 0 5px rgba(37, 99, 235, 0.18),
+    0 2px 8px rgba(15, 23, 42, 0.22);
+}
+
+input[type="range"].creative-range:focus-visible::-moz-range-thumb {
+  box-shadow:
+    0 0 0 5px rgba(37, 99, 235, 0.18),
+    0 2px 8px rgba(15, 23, 42, 0.22);
+}
+
+/* Utilities */
+.text-muted {
+    color: var(--text-secondary) !important;
+}
+
+pre {
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    color: #a5b4fc;
+}
+
+/* Links - readable and "SaaS-like" */
+a {
+    color: var(--accent-primary);
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* Pastel schemes for cards */
+/* Blue - Information */
+.card.pastel-blue {
+    background: #f2f6ff;
+    border-color: rgba(37, 99, 235, 0.18);
+}
+.card.pastel-blue .card-header {
+    background-color: rgba(37, 99, 235, 0.04);
+    border-bottom-color: rgba(37, 99, 235, 0.1);
+    color: #1e3a8a;
+}
+.card.pastel-blue .card-title {
+    color: #1e3a8a;
+}
+.card.pastel-blue .muted,
+.card.pastel-blue .text-muted {
+    color: rgba(30, 58, 138, 0.65);
+}
+
+/* Green - Success / Status */
+.card.pastel-green {
+    background: #ecfdf5;
+    border-color: rgba(22, 163, 74, 0.22);
+}
+.card.pastel-green .card-header {
+    background-color: rgba(22, 163, 74, 0.04);
+    border-bottom-color: rgba(22, 163, 74, 0.1);
+    color: #065f46;
+}
+.card.pastel-green .card-title {
+    color: #065f46;
+}
+.card.pastel-green .muted,
+.card.pastel-green .text-muted {
+    color: rgba(6, 95, 70, 0.65);
+}
+
+/* Violet - AI / Processes */
+.card.pastel-violet {
+    background: #f5f3ff;
+    border-color: rgba(124, 58, 237, 0.22);
+}
+.card.pastel-violet .card-header {
+    background-color: rgba(124, 58, 237, 0.04);
+    border-bottom-color: rgba(124, 58, 237, 0.1);
+    color: #5b21b6;
+}
+.card.pastel-violet .card-title {
+    color: #5b21b6;
+}
+.card.pastel-violet .muted,
+.card.pastel-violet .text-muted {
+    color: rgba(91, 33, 182, 0.65);
+}
+
+/* Readable empty state (e.g. "Параметры не заданы") */
+.empty-state {
+    text-align: center;
+    color: var(--text-muted);
+}
+.empty-state .title {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+.empty-state .description {
+    color: var(--text-muted);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Smoke Out Animation for Toasts */
+.toast-smoke-out {
+    animation: smokeOut 0.65s ease-in forwards;
+    pointer-events: none;
+    position: relative;
+    overflow: hidden;
+}
+
+@keyframes smokeOut {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-40px) scale(1.05);
+        filter: blur(8px);
+    }
+}
+
+.toast-smoke-out::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+    animation: smokeClouds 0.65s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes smokeClouds {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.8);
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-60px) scale(1.5);
+    }
+}

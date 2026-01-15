@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block title %}Продукты{% endblock %}
+
+{% block content %}
+<h2>Настройка цен и этапов</h2>
+<div class="card pastel-green shadow-sm">
+    <div class="card-body">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Услуга</th>
+                    <th>Активно</th>
+                    <th>Цена</th>
+                    <th>Название для клиента</th>
+                    <th class="text-end">Действие</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <form action="/admin/products/update" method="post">
+                        <input type="hidden" name="key" value="{{ product.key }}">
+                        <td>
+                            <div class="fw-bold">{{ product.value_json.title or product.key }}</div>
+                            <small class="text-muted">{{ product.key }}</small>
+                        </td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="enabled" value="true" {% if product.value_json.enabled %}checked{% endif %}>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group input-group-sm" style="max-width: 150px;">
+                                <input type="number" name="price" class="form-control" value="{{ product.value_json.price / 100 if product.value_json.price else 0 }}" min="0" step="0.01" required>
+                                <span class="input-group-text">₽</span>
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" name="title" class="form-control form-control-sm" value="{{ product.value_json.title }}" required>
+                        </td>
+                        <td class="text-end">
+                            <button type="submit" class="btn btn-sm btn-success">
+                                <i class="bi bi-check-lg"></i> {{ texts.COMMON.save }}
+                            </button>
+                        </td>
+                    </form>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

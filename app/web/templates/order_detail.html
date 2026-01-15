@@ -1,0 +1,182 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ texts.ORDER.title.format(id=order.id|string|truncate(8, True, '')) }}{% endblock %}
+
+{% block content %}
+<div class="container animate-fade-in">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="/admin/orders">Заказы</a></li>
+                <li class="breadcrumb-item active">{{ texts.ORDER.title.format(id=order.id|string|truncate(8, True, '')) }}</li>
+            </ol>
+        </nav>
+        <div class="d-flex gap-2">
+            <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2">
+                {{ STATUS_LABELS.order[order.status] or order.status }}
+            </span>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Сводка -->
+        <div class="col-lg-4">
+            <div class="card pastel-blue shadow-sm h-100">
+                <div class="card-header">
+                    <i class="bi bi-info-circle me-2"></i>{{ texts.ORDER.summary }}
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <small class="text-muted d-block">{{ texts.ORDER.status }}</small>
+                        <span class="badge bg-primary-subtle text-primary">{{ STATUS_LABELS.order[order.status] or order.status }}</span>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted d-block">{{ texts.ORDER.created }}</small>
+                        <span class="fw-medium">{{ order.created_at.strftime('%d.%m.%Y %H:%M') }}</span>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted d-block">{{ texts.ORDER.total }}</small>
+                        <h3 class="text-success mb-0">
+                            {% set total = namespace(value=0) %}
+                            {% for s in order.stages %}{% set total.value = total.value + s.price %}{% endfor %}
+                            {{ total.value / 100 }} ₽
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Параметры генерации -->
+        <div class="col-lg-8">
+            <div class="card pastel-violet shadow-sm h-100">
+                <div class="card-header">
+                    <i class="bi bi-list-stars me-2"></i>Параметры генерации
+                </div>
+                <div class="card-body">
+                    {% if order.context_json %}
+                    <div class="row g-3">
+                        {% set whitelist = {'occasion': 'Повод', 'recipient': 'Кому', 'details': 'Детали'} %}
+                        {% for key, label in whitelist.items() %}
+                        {% if order.context_json[key] %}
+                        <div class="col-md-6">
+                            <div class="p-3 rounded parameter-card">
+                                <small class="text-muted d-block text-uppercase small fw-bold">{{ label }}</small>
+                                <span class="text-primary-emphasis">{{ order.context_json[key] }}</span>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="bi bi-patch-question fs-1 text-muted"></i>
+                        <p class="text-muted mt-2">Параметры не заданы</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Этапы выполнения -->
+    <div class="card pastel-green shadow-sm mt-4">
+        <div class="card-header">
+            <i class="bi bi-stack me-2"></i>{{ texts.ORDER.stages }}
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th class="ps-4">{{ texts.ORDER.stage }}</th>
+                            <th>Статус</th>
+                            <th>{{ texts.ORDER.price }}</th>
+                            <th class="text-end pe-4">{{ texts.ORDER.actions }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stage in order.stages %}
+                        <tr>
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="stage-icon me-3 text-primary">
+                                        {% if stage.stage_type == 'POEM' %}<i class="bi bi-pen"></i>
+                                        {% elif stage.stage_type == 'VOICE' %}<i class="bi bi-mic"></i>
+                                        {% elif stage.stage_type == 'SONG' %}<i class="bi bi-music-note-beamed"></i>
+                                        {% elif stage.stage_type == 'CLIP' %}<i class="bi bi-film"></i>
+                                        {% else %}<i class="bi bi-circle"></i>{% endif %}
+                                    </div>
+                                    <div>
+                                        <span class="fw-bold">
+                                            {% if stage.stage_type == 'POEM' %}Стихотворение
+                                            {% elif stage.stage_type == 'VOICE' %}Озвучка
+                                            {% elif stage.stage_type == 'SONG' %}Песня
+                                            {% elif stage.stage_type == 'CLIP' %}Клип
+                                            {% else %}{{ stage.stage_type }}{% endif %}
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                {% set label = STATUS_LABELS.stage[stage.status] or stage.status %}
+                                {% if stage.status == 'completed' %}
+                                <span class="badge bg-success-subtle text-success">
+                                    <i class="bi bi-check2-circle me-1"></i>{{ label }}
+                                </span>
+                                {% elif stage.status == 'processing' %}
+                                <span class="badge bg-primary-subtle text-primary">
+                                    <span class="spinner-border spinner-border-sm me-1" role="status"></span>{{ label }}
+                                </span>
+                                {% elif stage.status == 'failed' %}
+                                <span class="badge bg-danger-subtle text-danger">
+                                    <i class="bi bi-exclamation-triangle me-1"></i>{{ label }}
+                                </span>
+                                {% elif stage.status == 'pending' %}
+                                <span class="badge bg-secondary-subtle text-secondary">
+                                    <i class="bi bi-clock me-1"></i>{{ label }}
+                                </span>
+                                {% else %}
+                                <span class="badge bg-dark text-light">{{ label }}</span>
+                                {% endif %}
+                            </td>
+                            <td><span class="fw-medium">{{ stage.price / 100 }} ₽</span></td>
+                            <td class="text-end pe-4">
+                                <div class="btn-group">
+                                    <form action="/admin/stages/{{ stage.id }}/requeue" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-outline-warning"
+                                                title="{{ texts.ORDER.restart }}" {% if stage.status == 'processing' %}disabled{% endif %}
+                                                data-bs-toggle="tooltip" data-bs-title="{{ texts.ORDER.restart_helper }}">
+                                            <i class="bi bi-arrow-clockwise"></i>
+                                        </button>
+                                    </form>
+                                    <form action="/admin/stages/{{ stage.id }}/cancel" method="post" class="d-inline ms-1">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                title="{{ texts.ORDER.cancel_stage }}" {% if stage.status in ['completed', 'cancelled', 'failed'] %}disabled{% endif %}
+                                                data-bs-toggle="tooltip" data-bs-title="{{ texts.ORDER.cancel_helper }}">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.stage-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(59, 130, 246, 0.1);
+    border-radius: 8px;
+    font-size: 1.2rem;
+}
+</style>
+{% endblock %}
